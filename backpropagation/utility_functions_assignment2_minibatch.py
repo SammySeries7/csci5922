@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import tensorflow as tf
 import re
 import codecs
 import os
@@ -8,25 +7,8 @@ from nltk.tokenize import RegexpTokenizer
 
 import os
 import numpy as np
-import keras
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import Flatten
-from keras.layers import LSTM
-from keras.layers.embeddings import Embedding
-from keras.layers import Bidirectional
-from keras.preprocessing import sequence
-from keras.layers import Dropout
-import h5py
-#import utility_functions as uf
-from keras.models import model_from_json
-from keras.models import load_model
-from nltk.tokenize import RegexpTokenizer
 
-from itertools import islice
-import random
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import accuracy_score
+
 
 #%%
 ################################### Paths to Data ########################################################################
@@ -374,7 +356,7 @@ print(np.unique(train_y.shape[1]))
 #g=np.where(train_y[:,9]==1)
 #q=np.where(train_y[:,0]==1)
 
-num=1000
+num=5000
 temp=np.empty(0)
 temp_test=np.empty(0)
 for i in range(num):
@@ -382,7 +364,7 @@ for i in range(num):
         ind1=int((train_x[i,j]))
         temp=np.concatenate((temp,weight_matrix[ind1]))
         
-num_test=200
+num_test=1000
 for i in range(num_test):
     for j in range(30):
         ind1=int((test_x[i,j]))
@@ -472,12 +454,25 @@ class myneuronnet():
         self.BackProp(x, y, output)
         return output
     
+    def confusion_matrix_hand(self,y_true,y_pred):
+        y_actu = pd.Series(y_true, name='Actual')
+        y_pred = pd.Series(y_pred, name='Predicted')
+        return pd.crosstab(y_actu, y_pred)
+    
+    def accuracy_hand(self,y_true,y_pred):
+        count=0
+        for i in range(len(y_true)):
+            if y_true[i]==y_pred[i]:
+                count+=1
+        return count/len(y_true)*100
+    
+   
     def PredictNetwork(self, x, y):
         output = self.FeedForward(x)
         output_n=np.argmax(output,axis=1)
         y_test_n=np.argmax(y,axis=1)
-        print('Accuracy score: ',accuracy_score(y_test_n, output_n)*100, ' %')
-        print('Confusion matrix: ','\n',confusion_matrix(y_test_n,output_n))
+        print('Accuracy score: ',self.accuracy_hand(y_test_n, output_n), ' %')
+        print('Confusion matrix: ','\n',self.confusion_matrix_hand(y_test_n,output_n))
         
     
     def plot(self):

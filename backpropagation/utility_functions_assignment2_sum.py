@@ -1,29 +1,13 @@
 import pandas as pd
 import numpy as np
-import tensorflow as tf
+
 import re
 import codecs
 import os
 from nltk.tokenize import RegexpTokenizer
 
 import os
-import numpy as np
-import keras
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import Flatten
-from keras.layers import LSTM
-from keras.layers.embeddings import Embedding
-from keras.layers import Bidirectional
-from keras.preprocessing import sequence
-from keras.layers import Dropout
-import h5py
-#import utility_functions as uf
-from keras.models import model_from_json
-from keras.models import load_model
-from nltk.tokenize import RegexpTokenizer
 
-from itertools import islice
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 
